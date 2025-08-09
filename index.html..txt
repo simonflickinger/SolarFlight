@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SolarFlight – PV-Inspektionen mit Drohne (München & Bayern)</title>
+  <meta name="description" content="SolarFlight: Thermografie-Inspektionen für Photovoltaikanlagen in München & Bayern. Drohnenflüge mit Wärmebildkamera, DJI-Berichte und Unterstützung bei Versicherungsthemen.">
+  <meta name="robots" content="index,follow">
+  <meta name="color-scheme" content="light">
+  <style>
+    :root{
+      /* Monochromes, helles UI */
+      --bg:#ffffff;
+      --fg:#111112;          /* fast schwarz */
+      --muted:#4b4f55;       /* Anthrazit */
+      --soft:#8c9096;        /* grauer Begleittext */
+      --line:#e6e7eb;        /* feine Linien */
+      --card:#fafafa;
+      --accent:#111112;      /* Schwarz als Akzent */
+      --focus:#0b65d8;       /* systemnahes Blau für sichtbaren Fokus */
+      --radius:14px;
+      --shadow:0 8px 28px rgba(18,18,18,.06);
+      --max:1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica Neue,Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(900px 400px at 85% -5%, #00000008 0, transparent 60%),
+        radial-gradient(700px 300px at 10% 10%, #00000006 0, transparent 60%),
+        var(--bg);
+      color:var(--fg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    a{color:var(--fg); text-underline-offset:3px}
+    a:hover{text-decoration:underline}
+    img{max-width:100%; height:auto}
+
+    .skip{position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;}
+    .skip:focus{left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#fff; color:var(--fg); border:2px solid var(--focus); border-radius:.5rem}
+
+    header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.8); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--line)}
+    .nav{max-width:var(--max); margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:.9rem 1rem;}
+    .brand{display:flex; align-items:center; gap:.7rem; font-weight:700; letter-spacing:.2px}
+    .logo{width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:
+      conic-gradient(from 45deg, #111 0 25%, #fff 0 50%, #111 0 75%, #fff 0 100%);
+      box-shadow:inset 0 0 0 1px #00000010;
+    }
+    .nav-cta{display:flex; gap:.6rem; align-items:center}
+
+    .btn{
+      display:inline-block; padding:.7rem 1rem; border-radius:.7rem; border:1px solid var(--fg); color:#fff; background:var(--accent);
+      text-decoration:none; font-weight:600; box-shadow:var(--shadow); transition:transform .06s ease, filter .15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.03)}
+    .btn.ghost{background:transparent; color:var(--fg); border:1px solid var(--line)}
+    .btn.block{display:block; text-align:center}
+    .pill{display:inline-flex; align-items:center; gap:.45rem; padding:.25rem .6rem; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:.85rem; background:#fff}
+
+    main{display:block}
+    section{padding:clamp(1.6rem,4vw,3rem) 1rem}
+    .wrap{max-width:var(--max); margin:0 auto}
+
+    .hero{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(1rem,3vw,3rem); align-items:center; padding:clamp(2rem,6vw,5rem) 1rem;}
+    h1{font-size:clamp(1.9rem,3.2vw,3rem); line-height:1.1; margin:.2rem 0 .8rem; letter-spacing:-.01em}
+    .lead{color:var(--muted); margin:0 0 1.2rem}
+    .meta{display:flex; gap:.8rem; flex-wrap:wrap; color:var(--soft); font-size:.95rem}
+    .kpi{display:flex; align-items:center; gap:.5rem}
+
+    .surface{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:clamp(1rem,2.2vw,1.6rem)}
+    .grid{display:grid; gap:clamp(1rem,2.2vw,1.6rem)}
+    .cols-3{grid-template-columns:repeat(3,1fr)}
+    .cols-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:960px){ .hero{grid-template-columns:1fr} .cols-3,.cols-2{grid-template-columns:1fr} }
+
+    h2{margin:0 0 .6rem; font-size:clamp(1.25rem,2vw,1.8rem)}
+    h3{margin:.2rem 0 .4rem; font-size:1.05rem}
+    ul{margin:.5rem 0 0 1.2rem; padding:0}
+    li{margin:.3rem 0}
+
+    .footline{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem; color:var(--soft); font-size:.95rem}
+    .mini{font-size:.92rem; color:var(--soft)}
+    .mono{font-variant-numeric:tabular-nums}
+
+    /* Monochrome „Scan“-Illustration */
+    .scan{position:relative; min-height:360px; border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(160deg,#fff,#f7f7f7 60%,#f3f3f3)}
+    .ring{position:absolute; border:1px dashed #b9bcc2; border-radius:50%;}
+    .ring.r1{width:82%; height:82%; top:9%; left:9%; opacity:.35}
+    .ring.r2{width:62%; height:62%; top:19%; left:19%; opacity:.3}
+    .ring.r3{width:42%; height:42%; top:29%; left:29%; opacity:.25}
+    .sweep{position:absolute; width:62%; height:62%; top:19%; left:19%; border-radius:50%;
+      background:conic-gradient(from var(--a), rgba(17,17,18,.12), rgba(17,17,18,0) 35%); filter:blur(8px)}
+    .drone{position:absolute; top:16%; left:16%; width:60px; height:32px; border-radius:8px; background:#111; border:1px solid #000; box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .drone::before,.drone::after{content:""; position:absolute; width:20px; height:6px; top:-6px; border-radius:3px; background:#111; border:1px solid #000}
+    .drone::before{left:-16px} .drone::after{right:-16px}
+    .hotspot{position:absolute; width:10px; height:10px; border-radius:50%; background:#111; box-shadow:0 0 0 3px #00000012}
+
+    /* Form */
+    input,textarea{width:100%; padding:.65rem .75rem; border-radius:.6rem; border:1px solid var(--line); background:#fff; color:var(--fg)}
+    input:focus,textarea:focus, a:focus, button:focus{outline:2px solid var(--focus); outline-offset:2px}
+    label{display:block}
+
+    /* Print (einfarbig sauber) */
+    @media print{
+      header, .scan{display:none}
+      .btn{border-color:#000; background:#fff; color:#000}
+      .surface{box-shadow:none}
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sweep = document.querySelector('.sweep');
+      let a = 0; function tick(){ a = (a+1)%360; if(sweep) sweep.style.setProperty('--a', a+'deg'); requestAnimationFrame(tick); }
+      tick();
+    });
+  </script>
+
+  <!-- Strukturierte Daten -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "SolarFlight",
+    "areaServed": ["München","Bayern"],
+    "url": "",
+    "telephone": "+49 176 70976859",
+    "email": "simonflickinger@yahoo.de",
+    "priceRange": "€€",
+    "description": "Thermografie-Inspektion von Photovoltaikanlagen per Drohne. DJI-Softwareberichte, Fehlerklassifizierung und Unterstützung bei Versicherungsthemen.",
+    "address": { "@type": "PostalAddress", "addressLocality": "München", "addressRegion": "BY", "addressCountry": "DE" }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#content">Zum Inhalt springen</a>
+
+  <header>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <div class="brand"><span class="logo" aria-hidden="true"></span> SolarFlight</div>
+      <div class="nav-cta">
+        <a class="btn ghost" href="tel:+4917670976859" aria-label="Anrufen: 0176 70976859">📞 0176&nbsp;70976859</a>
+        <a class="btn" href="#kontakt">Angebot anfordern</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="wrap hero">
+      <div>
+        <span class="pill" aria-label="Einsatzgebiet">München & Bayern</span>
+        <h1>PV-Inspektionen mit Drohne & Wärmebild</h1>
+        <p class="lead">
+          <strong>Präzise Thermografie. Klare Befunde. Schnelle Entscheidungen.</strong><br>
+          Wir überfliegen Ihre Photovoltaikanlage mit Thermalkamera, erkennen Hotspots, dokumentieren Befunde in DJI-Berichten
+          und unterstützen bei der Abwicklung mit Ihrer Versicherung.
+        </p>
+        <div class="meta" aria-label="Kernnutzen">
+          <span class="kpi">🛰️ Thermografie-Überflug</span>
+          <span class="kpi">📄 DJI-Berichte</span>
+          <span class="kpi">🛡️ Versicherungssupport</span>
+        </div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem">
+          <a class="btn" href="#kontakt">🚀 Angebot anfordern</a>
+          <a class="btn ghost" href="mailto:simonflickinger@yahoo.de?subject=Anfrage%20PV-Inspektion%20SolarFlight&body=Hallo%20SolarFlight,%0Aich%20ben%C3%B6tige%20eine%20Inspektion%20f%C3%BCr:%0A%0AStandort:%0AGr%C3%B6%C3%9Fe%20(kWp):%0ADachtyp:%0AZugang:%0AWunschtermin:%0A%0ABeste%20Gr%C3%BC%C3%9Fe,">📧 E-Mail senden</a>
+        </div>
+      </div>
+
+      <div class="scan" aria-hidden="true">
+        <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+        <div class="sweep" style="--a:0deg"></div>
+        <div class="drone"></div>
+        <div class="hotspot" style="top:62%; left:26%"></div>
+        <div class="hotspot" style="top:40%; left:70%"></div>
+        <div class="hotspot" style="top:78%; left:58%"></div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="grid cols-3">
+        <div class="surface">
+          <h2>Leistungen</h2>
+          <ul>
+            <li>Thermografie-Überflug (Dach & Freifläche)</li>
+            <li>Automatische & manuelle Hotspot-Detektion</li>
+            <li>DJI-Berichte mit Fotos, IR & GPS-Bezug</li>
+            <li>Sichtprüfung (Module, Strings, Kabel soweit sichtbar)</li>
+            <li>Dokumentation für Versicherung & Garantie</li>
+            <li>Wiederholungs-Inspektionen (z. B. jährlich)</li>
+          </ul>
+        </div>
+        <div class="surface">
+          <h2>Für wen?</h2>
+          <ul>
+            <li>Privat-Dachanlagen</li>
+            <li>Gewerbe-/Industrie-Dächer</li>
+            <li>Solarparks & Betreiber</li>
+            <li>Installateure & Service-Partner</li>
+            <li>Versicherer & Gutachter</li>
+          </ul>
+        </div>
+        <div class="surface">
+          <h2>Warum SolarFlight?</h2>
+          <ul>
+            <li>Schnell vor Ort in München & ganz Bayern</li>
+            <li>Transparente Befunde & klare Handlungsempfehlungen</li>
+            <li>Berührungslose Prüfung ohne Anlagenausfall</li>
+            <li>Datenschutz & Flugrecht – verantwortungsbewusst</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="grid cols-2">
+        <div class="surface">
+          <h2>Ablauf</h2>
+          <ol>
+            <li><b>Anfrage:</b> Größe (kWp), Adresse, Dachtyp, Zugang.</li>
+            <li><b>Flugplanung:</b> Luftraumprüfung, Sicherheits-Briefing.</li>
+            <li><b>Messflug:</b> Thermografie bei geeigneten Bedingungen.</li>
+            <li><b>Auswertung:</b> DJI-Bericht mit Fotos/IR, Priorisierung.</li>
+            <li><b>Besprechung:</b> Empfehlung, nächste Schritte, optional Re-Check.</li>
+          </ol>
+          <p class="mini">Hinweis: Für valide Thermografie sind geeignete Einstrahlungs- & Temperatur-Differenzen erforderlich.</p>
+        </div>
+        <div class="surface">
+          <h2>Equipment & Nachweise</h2>
+          <ul>
+            <li>Drohne mit Wärmebildkamera (hochauflösende IR)</li>
+            <li>DJI-Ökosystem für Aufnahme & Berichtserstellung</li>
+            <li>EU-Fernpilotenkompetenz, Haftpflicht vorhanden</li>
+            <li>DSGVO-konformer Umgang mit Bilddaten</li>
+          </ul>
+          <p class="mini">Details zum konkreten Modell auf Anfrage.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="grid cols-2">
+        <div class="surface">
+          <h2>FAQ</h2>
+          <details><summary>Was kostet eine Inspektion?</summary>
+            <p>Abhängig von Anlagengröße, Dachzugang und Anfahrt. Nach kurzer Abstimmung erhalten Sie ein Festpreis-Angebot. Sammeltermine für Nachbarschaften möglich.</p>
+          </details>
+          <details><summary>Wann sind Thermografie-Flüge sinnvoll?</summary>
+            <p>Wenn ausreichend Einstrahlung und Temperaturdifferenz vorliegen (z. B. sonnig, wenig Wind). Das klären wir bei der Terminierung.</p>
+          </details>
+          <details><summary>Bekomme ich einen Bericht für die Versicherung?</summary>
+            <p>Ja. Sie erhalten einen strukturierten DJI-Bericht inkl. Bildmaterial, Befundliste und optionalen Zusatzfotos zur Beweissicherung.</p>
+          </details>
+          <details><summary>Stören die Flüge den Betrieb?</summary>
+            <p>Nein, die Inspektion erfolgt berührungslos, der Betrieb kann weiterlaufen.</p>
+          </details>
+        </div>
+
+        <div class="surface" id="kontakt">
+          <h2>Kontakt & Angebot</h2>
+          <p>Am schnellsten telefonisch oder per E-Mail. Für ein Angebot nennen Sie bitte Standort, kWp und einen Wunschtermin.</p>
+          <p>📞 <a href="tel:+4917670976859" aria-label="Anruf an SolarFlight">0176&nbsp;70976859</a><br>
+             📧 <a href="mailto:simonflickinger@yahoo.de">simonflickinger@yahoo.de</a><br>
+             📍 München · Einsätze in ganz Bayern</p>
+
+          <a class="btn block" href="mailto:simonflickinger@yahoo.de?subject=Angebot%20anfordern%20–%20SolarFlight&body=Hallo%20SolarFlight,%0Aich%20m%C3%B6chte%20ein%20Angebot%20f%C3%BCr%20eine%20PV-Inspektion.%0A%0AStandort:%20%0AGr%C3%B6%C3%9Fe%20(kWp):%20%0ADachtyp:%20%0AZugang%20(Steigschutz/Hubsteiger):%20%0AWunschtermin:%20%0A%0AWeitere%20Infos:%20">📎 Angebot anfordern</a>
+
+          <p class="mini" style="margin-top:1rem">Oder nutzen Sie das Formular:</p>
+          <form class="grid" style="grid-template-columns:1fr 1fr" action="mailto:simonflickinger@yahoo.de" method="post" enctype="text/plain">
+            <label>Ihr Name<br><input required name="Name" type="text"></label>
+            <label>E-Mail<br><input required name="E-Mail" type="email"></label>
+            <label style="grid-column:1/-1">Nachricht<br><textarea required name="Nachricht" rows="4"></textarea></label>
+            <label style="grid-column:1/-1"><input type="checkbox" required> Ich stimme der Verarbeitung meiner Angaben zum Zweck der Kontaktaufnahme zu.</label>
+            <div style="text-align:right"><button class="btn" type="submit">Senden</button></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="surface">
+        <h2>Pakete (Beispiele)</h2>
+        <ul>
+          <li><b>Basis Check</b> – Thermografie-Überflug, Kurzbericht</li>
+          <li><b>Pro Bericht</b> – Thermo + Sichtprüfung, DJI-Bericht, 15–30 Befundfotos</li>
+          <li><b>Park Plus</b> – große Anlagen/Mehrfeld, Reporting pro String-Bereich</li>
+        </ul>
+        <div class="footline mini">
+          <span>Preise auf Anfrage – faire Kalkulation nach Aufwand & Anfahrt.</span>
+          <span>Terminfenster: werktags & samstags · Reaktionszeit: i. d. R. 24–48 h</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="surface" id="impressum">
+        <h2>Impressum & Datenschutz (Kurz)</h2>
+        <p><b>SolarFlight</b> – Drohnen-Inspektion von Photovoltaikanlagen<br>
+          München · Bayern · Deutschland<br>
+          Telefon: <a href="tel:+4917670976859">0176&nbsp;70976859</a> · E-Mail: <a href="mailto:simonflickinger@yahoo.de">simonflickinger@yahoo.de</a></p>
+        <p class="mini">Rechtsform/Adresse/USt-ID bitte ergänzen. Diese Seite setzt keine Tracker/Cookies; personenbezogene Daten fallen nur bei aktiver Kontaktaufnahme an.</p>
+        <details>
+          <summary>Datenschutzhinweise (Auszug)</summary>
+          <ul class="mini">
+            <li>Verantwortlich: SolarFlight, München.</li>
+            <li>Zweck: Beantwortung von Anfragen, Angebotserstellung.</li>
+            <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.</li>
+            <li>Speicherdauer: bis Zweckerfüllung/gesetzliche Pflichten.</li>
+            <li>Rechte: Auskunft, Berichtigung, Löschung, Widerspruch.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap" style="padding-top:0">
+    <div class="footline">
+      <div>© <span class="mono" id="year"></span> SolarFlight · München & Bayern</div>
+      <div><a href="#impressum">Impressum/Datenschutz</a> · <a href="#kontakt">Kontakt</a></div>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
